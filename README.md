@@ -207,12 +207,64 @@ Notes:
 
 ---
 
+## Production hardening
+
+The backend includes baseline production safeguards:
+- `helmet` security headers, gzip `compression`, and `trust proxy` (correct client IPs
+  behind a reverse proxy / load balancer)
+- Rate limiting: a general limiter on all `/api` routes and a stricter one on
+  auth endpoints (login, register, Google auth, forgot/reset password) to slow brute-force
+  attempts
+- Startup env validation — in `NODE_ENV=production`, the process refuses to start if
+  `MONGO_URI`, `JWT_SECRET`, `STRIPE_SECRET_KEY`, or `CLIENT_URL` are missing, or if
+  `JWT_SECRET` is still the placeholder value
+- Graceful shutdown on `SIGTERM`/`SIGINT` — stops accepting new connections, closes the
+  MongoDB connection, then exits (with a 10s force-exit fallback)
+
+There is no automated test suite yet — CI covers lint/typecheck/build only, not behavior.
+
+---
+
+## CI/CD (GitHub Actions)
+
+[.github/workflows/ci.yml](.github/workflows/ci.yml) runs on every push/PR to `main`:
+
+1. **backend** — install, `typecheck`, `build` (TypeScript → `dist/`)
+2. **frontend** — install, `lint` (oxlint), `typecheck`, `build` (Vite)
+3. **validate-compose** — sanity-checks `docker-compose.yml` with `docker compose config`
+4. **docker-backend** / **docker-frontend** — *push to `main` only*: build the production
+   Docker images and publish them to GitHub Container Registry as
+   `ghcr.io/<owner>/<repo>-backend` and `ghcr.io/<owner>/<repo>-frontend`, tagged `latest`
+   and the commit SHA. No external secrets required — auth uses the built-in
+   `GITHUB_TOKEN`.
+
+To bake real values into the published frontend image (rather than the empty-string
+defaults used for the CI build check), add these as **repository variables** (Settings →
+Secrets and variables → Actions → Variables): `VITE_API_URL`,
+`VITE_STRIPE_PUBLISHABLE_KEY`, `VITE_GOOGLE_CLIENT_ID`.
+
+Pulling and running the published images elsewhere:
+```bash
+docker pull ghcr.io/<owner>/<repo>-backend:latest
+docker pull ghcr.io/<owner>/<repo>-frontend:latest
+```
+(Make the packages public under the repo's **Packages** tab, or `docker login ghcr.io`
+first if they're private.)
+
+Dependabot ([.github/dependabot.yml](.github/dependabot.yml)) opens weekly PRs for npm
+dependencies (backend/frontend), Docker base images, and GitHub Actions versions.
+
+---
+
 ## Deployment notes
 
-- **Backend**: deploy to Render, Railway, or Fly.io. Set the env vars from `.env.example`,
-  point `MONGO_URI` at an Atlas cluster, and set `CLIENT_URL` to your deployed frontend origin.
-- **Frontend**: deploy to Vercel or Netlify. Set `VITE_API_URL` to your deployed backend's
-  `/api` URL and `VITE_STRIPE_PUBLISHABLE_KEY` to your Stripe publishable key.
+- **Backend**: deploy to Render, Railway, or Fly.io — either build from source or run the
+  `ghcr.io/<owner>/<repo>-backend` image published by CI. Set the env vars from
+  `.env.example`, point `MONGO_URI` at an Atlas cluster, and set `CLIENT_URL` to your
+  deployed frontend origin.
+- **Frontend**: deploy to Vercel or Netlify (build from source, since `VITE_*` vars need
+  to be set for that platform's build), or run the `ghcr.io/<owner>/<repo>-frontend`
+  image anywhere that serves a container on port 80.
 - Remember to switch Stripe keys from test (`sk_test_`/`pk_test_`) to live keys only once
   you're ready to accept real payments — this project is wired for test mode throughout.
 

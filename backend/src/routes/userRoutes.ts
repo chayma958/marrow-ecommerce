@@ -13,15 +13,16 @@ import {
 } from '../controllers/authController';
 import { getWishlist, addToWishlist, removeFromWishlist } from '../controllers/wishlistController';
 import { protect, admin } from '../middleware/authMiddleware';
+import { authLimiter } from '../middleware/rateLimiter';
 
 const router = express.Router();
 
-router.route('/').post(registerUser).get(protect, admin, getUsers);
-router.post('/login', loginUser);
-router.post('/auth/google', googleAuth);
+router.route('/').post(authLimiter, registerUser).get(protect, admin, getUsers);
+router.post('/login', authLimiter, loginUser);
+router.post('/auth/google', authLimiter, googleAuth);
 router.post('/logout', logoutUser);
-router.post('/forgot-password', forgotPassword);
-router.put('/reset-password/:token', resetPassword);
+router.post('/forgot-password', authLimiter, forgotPassword);
+router.put('/reset-password/:token', authLimiter, resetPassword);
 router
   .route('/profile')
   .get(protect, getUserProfile)
