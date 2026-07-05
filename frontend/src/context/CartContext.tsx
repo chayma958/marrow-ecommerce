@@ -39,7 +39,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [paymentMethod, setPaymentMethod] = useState<string>('Stripe');
   const [coupon, setCoupon] = useState<CouponValidation | null>(null);
 
-  // Reload every piece of scoped state whenever the signed-in user changes.
   useEffect(() => {
     if (authLoading) return;
 
@@ -137,7 +136,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     : 0;
   const totalPrice = Math.max(0, Number((itemsPrice + shippingPrice + taxPrice - discountAmount).toFixed(2)));
 
-  // A coupon that no longer meets its minimum order value must stop applying.
   useEffect(() => {
     if (coupon && itemsPrice < coupon.minOrderValue) {
       removeCoupon();
