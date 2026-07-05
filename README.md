@@ -173,6 +173,40 @@ Use Stripe's test card during checkout:
 
 ---
 
+## Running with Docker
+
+Requires [Docker](https://www.docker.com/) and Docker Compose. This spins up MongoDB, the
+API, and the frontend (built and served via Nginx) as three containers.
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` with real values (Stripe test keys, JWT secret, etc. — see comments in the
+file). Then build and start everything:
+
+```bash
+docker compose up --build
+```
+
+- Frontend: `http://localhost:5173`
+- Backend API: `http://localhost:5000/api` (health check at `/api/health`)
+- MongoDB: `localhost:27017` (data persisted in the `mongo-data` volume)
+
+Seed the database (run once, against the running `backend` container):
+```bash
+docker compose exec backend npm run seed
+```
+
+Notes:
+- The frontend's `VITE_*` variables are baked into the static build at image-build time —
+  changing them in `.env` requires `docker compose up --build frontend` to take effect.
+- Uploaded images (when not using Cloudinary) persist in the `backend-uploads` volume.
+- To stop and remove containers: `docker compose down` (add `-v` to also drop the Mongo
+  data volume).
+
+---
+
 ## Deployment notes
 
 - **Backend**: deploy to Render, Railway, or Fly.io. Set the env vars from `.env.example`,
