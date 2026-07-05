@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { FiCheckCircle, FiXCircle } from 'react-icons/fi';
 import { useAuth } from '@/context/AuthContext';
 import { updateProfile } from '@/api/auth';
+import { isStrongPassword } from '@/utils/passwordPolicy';
 import { fetchMyOrders } from '@/api/orders';
 import { Order } from '@/types';
 import Message from '@/components/Message';
@@ -37,6 +38,10 @@ const ProfilePage: React.FC = () => {
     setSuccess('');
     if (password && password !== confirmPassword) {
       setError(t('auth.passwordsDontMatch'));
+      return;
+    }
+    if (password && !isStrongPassword(password)) {
+      setError(t('auth.passwordRequirements'));
       return;
     }
     setSaving(true);
@@ -86,6 +91,7 @@ const ProfilePage: React.FC = () => {
               placeholder={t('profile.newPasswordPlaceholder')}
               className="w-full border border-ink/15 rounded-lg px-3.5 py-2.5 outline-none focus:border-brand-400"
             />
+            {password && <p className="text-xs text-ink/40 mt-1.5">{t('auth.passwordRequirements')}</p>}
           </div>
           <div>
             <label className="block text-sm font-medium mb-1.5">{t('profile.confirmPassword')}</label>

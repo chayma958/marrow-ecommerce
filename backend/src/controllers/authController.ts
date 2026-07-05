@@ -6,6 +6,7 @@ import User from '../models/User';
 import generateToken from '../utils/generateToken';
 import { sendEmail } from '../utils/sendEmail';
 import { welcomeEmail, passwordResetEmail } from '../utils/emailTemplates';
+import { isStrongPassword, PASSWORD_REQUIREMENTS_MESSAGE } from '../utils/passwordPolicy';
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -18,6 +19,11 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
   if (!name || !email || !password) {
     res.status(400);
     throw new Error('Please fill in all fields');
+  }
+
+  if (!isStrongPassword(password)) {
+    res.status(400);
+    throw new Error(PASSWORD_REQUIREMENTS_MESSAGE);
   }
 
   const userExists = await User.findOne({ email });
@@ -155,6 +161,10 @@ export const updateUserProfile = asyncHandler(async (req: Request, res: Response
   user.name = req.body.name || user.name;
   user.email = req.body.email || user.email;
   if (req.body.password) {
+    if (!isStrongPassword(req.body.password)) {
+      res.status(400);
+      throw new Error(PASSWORD_REQUIREMENTS_MESSAGE);
+    }
     user.password = req.body.password;
   }
 
@@ -205,9 +215,9 @@ export const resetPassword = asyncHandler(async (req: Request, res: Response) =>
   }
 
   const { password } = req.body;
-  if (!password || password.length < 6) {
+  if (!password || !isStrongPassword(password)) {
     res.status(400);
-    throw new Error('Password must be at least 6 characters');
+    throw new Error(PASSWORD_REQUIREMENTS_MESSAGE);
   }
 
   user.password = password;

@@ -24,7 +24,7 @@ const userSchema = new Schema<IUser>(
       required: function (this: IUser) {
         return this.authProvider === 'local';
       },
-      minlength: 6,
+      minlength: 8,
     },
     googleId: { type: String, unique: true, sparse: true },
     authProvider: { type: String, enum: ['local', 'google'], required: true, default: 'local' },

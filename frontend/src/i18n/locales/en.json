@@ -229,6 +229,7 @@
   "auth": {
     "or": "or",
     "passwordsDontMatch": "Passwords do not match",
+    "passwordRequirements": "Must be at least 8 characters, with an uppercase letter, a lowercase letter, a number, and a symbol.",
     "login": {
       "title": "Welcome back",
       "subtitle": "Sign in to your Marrow account",
@@ -253,10 +254,10 @@
       "email": "Email address",
       "emailPlaceholder": "you@example.com",
       "password": "Password",
-      "passwordPlaceholder": "At least 6 characters",
+      "passwordPlaceholder": "At least 8 characters",
       "confirmPassword": "Confirm password",
       "confirmPasswordPlaceholder": "••••••••",
-      "passwordTooShort": "Password must be at least 6 characters",
+      "passwordTooShort": "Password must be at least 8 characters, with an uppercase letter, a lowercase letter, a number, and a symbol.",
       "creatingAccount": "Creating account...",
       "createAccount": "Create account",
       "alreadyHaveAccount": "Already have an account?",

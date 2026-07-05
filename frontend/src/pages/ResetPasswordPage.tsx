@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { resetPassword } from '@/api/auth';
 import Message from '@/components/Message';
+import { isStrongPassword } from '@/utils/passwordPolicy';
 
 const ResetPasswordPage: React.FC = () => {
   const { t } = useTranslation();
@@ -20,6 +21,10 @@ const ResetPasswordPage: React.FC = () => {
     setError('');
     if (password !== confirmPassword) {
       setError(t('auth.passwordsDontMatch'));
+      return;
+    }
+    if (!isStrongPassword(password)) {
+      setError(t('auth.passwordRequirements'));
       return;
     }
     setLoading(true);
@@ -46,19 +51,20 @@ const ResetPasswordPage: React.FC = () => {
           <input
             type="password"
             required
-            minLength={6}
+            minLength={8}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full border border-ink/15 rounded-lg px-3.5 py-2.5 outline-none focus:border-brand-400"
             placeholder="••••••••"
           />
+          <p className="text-xs text-ink/40 mt-1.5">{t('auth.passwordRequirements')}</p>
         </div>
         <div>
           <label className="block text-sm font-medium mb-1.5">{t('auth.resetPassword.confirmNewPassword')}</label>
           <input
             type="password"
             required
-            minLength={6}
+            minLength={8}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             className="w-full border border-ink/15 rounded-lg px-3.5 py-2.5 outline-none focus:border-brand-400"

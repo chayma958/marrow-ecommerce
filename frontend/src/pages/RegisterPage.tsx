@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
 import { useAuth } from '@/context/AuthContext';
 import Message from '@/components/Message';
+import { isStrongPassword } from '@/utils/passwordPolicy';
 
 const RegisterPage: React.FC = () => {
   const { t } = useTranslation();
@@ -23,7 +24,7 @@ const RegisterPage: React.FC = () => {
       setError(t('auth.passwordsDontMatch'));
       return;
     }
-    if (password.length < 6) {
+    if (!isStrongPassword(password)) {
       setError(t('auth.register.passwordTooShort'));
       return;
     }
@@ -83,11 +84,13 @@ const RegisterPage: React.FC = () => {
           <input
             type="password"
             required
+            minLength={8}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full border border-ink/15 rounded-lg px-3.5 py-2.5 outline-none focus:border-brand-400"
             placeholder={t('auth.register.passwordPlaceholder')}
           />
+          <p className="text-xs text-ink/40 mt-1.5">{t('auth.passwordRequirements')}</p>
         </div>
         <div>
           <label className="block text-sm font-medium mb-1.5">{t('auth.register.confirmPassword')}</label>
