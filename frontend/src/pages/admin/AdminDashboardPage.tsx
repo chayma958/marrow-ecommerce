@@ -70,7 +70,7 @@ const AdminDashboardPage: React.FC = () => {
         setTopProducts(t);
         setNewUsers(u);
       })
-      .catch(() => setError('Could not load analytics'));
+      .catch(() => setError('We couldn\'t load the analytics dashboard right now. Please try again in a moment.'));
   }, []);
 
   if (error) return <Message variant="error">{error}</Message>;

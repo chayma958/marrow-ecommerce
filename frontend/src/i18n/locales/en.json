@@ -78,7 +78,7 @@
     "min": "Min",
     "max": "Max",
     "noProducts": "No products match your filters.",
-    "loadError": "Could not load products. Is the API server running?",
+    "loadError": "We couldn't load products right now. Please try again in a moment.",
     "sortNewest": "Newest",
     "sortPriceAsc": "Price: Low to High",
     "sortPriceDesc": "Price: High to Low",

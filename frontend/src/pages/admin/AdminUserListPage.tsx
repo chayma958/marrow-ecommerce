@@ -21,7 +21,7 @@ const AdminUserListPage: React.FC = () => {
     setLoading(true);
     fetchUsers()
       .then(setUsers)
-      .catch(() => setError('Could not load users'))
+      .catch(() => setError('We couldn\'t load the user list right now. Please try again in a moment.'))
       .finally(() => setLoading(false));
   };
 

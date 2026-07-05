@@ -78,7 +78,7 @@
     "min": "Min",
     "max": "Max",
     "noProducts": "Aucun produit ne correspond à vos filtres.",
-    "loadError": "Impossible de charger les produits. Le serveur API est-il en cours d'exécution ?",
+    "loadError": "Nous n'avons pas pu charger les produits pour le moment. Veuillez réessayer dans un instant.",
     "sortNewest": "Plus récents",
     "sortPriceAsc": "Prix : croissant",
     "sortPriceDesc": "Prix : décroissant",

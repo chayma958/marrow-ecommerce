@@ -17,7 +17,7 @@ const AdminProductListPage: React.FC = () => {
     setLoading(true);
     fetchProducts({ pageSize: 100 })
       .then((data) => setProducts(data.products))
-      .catch(() => setError('Could not load products'))
+      .catch(() => setError('We couldn\'t load the product list right now. Please try again in a moment.'))
       .finally(() => setLoading(false));
   };
 

@@ -28,7 +28,7 @@ const AdminCouponListPage: React.FC = () => {
     setLoading(true);
     fetchCoupons()
       .then(setCoupons)
-      .catch(() => setError('Could not load coupons'))
+      .catch(() => setError('We couldn\'t load the coupon list right now. Please try again in a moment.'))
       .finally(() => setLoading(false));
   };
 

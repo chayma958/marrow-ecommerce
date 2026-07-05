@@ -24,7 +24,7 @@ const AdminOrderListPage: React.FC = () => {
     setLoading(true);
     fetchAllOrders(status || undefined)
       .then(setOrders)
-      .catch(() => setError('Could not load orders'))
+      .catch(() => setError('We couldn\'t load the order list right now. Please try again in a moment.'))
       .finally(() => setLoading(false));
   }, [status]);
 
