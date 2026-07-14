@@ -4,7 +4,7 @@ A production-style e-commerce web app built as a portfolio project: a curated go
 storefront with product browsing, filtering & search, wishlist, coupons, Stripe checkout,
 order tracking, an admin dashboard with analytics, and English/French localization.
 
-**Live demo:** https://marrow-e-commerce.pages.dev/login
+**Live demo:** https://marrow-e-commerce.pages.dev
 
 **Stack:** React 19 + TypeScript + Tailwind CSS (Vite) · Node.js + Express + TypeScript ·
 MongoDB + Mongoose · JWT auth + Google OAuth · Stripe (test mode) · i18next
