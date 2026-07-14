@@ -7,7 +7,7 @@ import { WishlistProvider } from '@/context/WishlistContext';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
-import { PrivateRoute, AdminRoute } from '@/components/RouteGuards';
+import { PrivateRoute, AdminRoute, GuestRoute } from '@/components/RouteGuards';
 
 import HomePage from '@/pages/HomePage';
 import ProductsPage from '@/pages/ProductsPage';
@@ -56,8 +56,10 @@ const App: React.FC = () => {
                   <Route path="/products" element={<ProductsPage />} />
                   <Route path="/products/:id" element={<ProductPage />} />
                   <Route path="/cart" element={<CartPage />} />
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/register" element={<RegisterPage />} />
+                  <Route element={<GuestRoute />}>
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                  </Route>
                   <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                   <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
                   <Route path="/about" element={<AboutPage />} />

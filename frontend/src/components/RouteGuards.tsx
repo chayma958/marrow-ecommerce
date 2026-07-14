@@ -10,6 +10,13 @@ export const PrivateRoute: React.FC = () => {
   return user ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
+export const GuestRoute: React.FC = () => {
+  const { user, loading } = useAuth();
+
+  if (loading) return <Loader full />;
+  return user ? <Navigate to="/" replace /> : <Outlet />;
+};
+
 export const AdminRoute: React.FC = () => {
   const { user, loading } = useAuth();
 
