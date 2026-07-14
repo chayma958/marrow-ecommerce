@@ -243,8 +243,7 @@
       "createAccount": "Créer un compte",
       "errorInvalid": "E-mail ou mot de passe invalide",
       "errorGoogle": "Impossible de se connecter avec Google",
-      "demoCredentialsTitle": "Identifiants de démonstration",
-      "demoCredentialsNote": "(après exécution du script de seed) :"
+      "demoCredentialsTitle": "Identifiants de démonstration"
     },
     "register": {
       "title": "Créez votre compte",

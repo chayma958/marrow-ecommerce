@@ -243,8 +243,7 @@
       "createAccount": "Create an account",
       "errorInvalid": "Invalid email or password",
       "errorGoogle": "Could not sign in with Google",
-      "demoCredentialsTitle": "Demo credentials",
-      "demoCredentialsNote": "(after running the seeder):"
+      "demoCredentialsTitle": "Demo credentials"
     },
     "register": {
       "title": "Create your account",

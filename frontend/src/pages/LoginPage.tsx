@@ -99,7 +99,7 @@ const LoginPage: React.FC = () => {
       </p>
 
       <div className="mt-8 bg-brand-50 rounded-xl p-4 text-xs text-ink/60">
-        <strong className="text-ink/80">{t('auth.login.demoCredentialsTitle')}</strong> {t('auth.login.demoCredentialsNote')}
+        <strong className="text-ink/80">{t('auth.login.demoCredentialsTitle')}</strong> 
         <br />Admin — admin@example.com / admin123
         <br />Customer — jane@example.com / jane1234
       </div>
